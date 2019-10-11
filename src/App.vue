@@ -1,20 +1,53 @@
 <template>
   <div id="app">
+    <g-chart
+      :settings="{ packages: ['corechart', 'table', 'map'] }"
+      type="CandlestickChart"
+      :data="chartData"
+      :options="chartOptions"
+     />
     <crypto-list :markets="markets"></crypto-list>
   </div>
 </template>
 
 <script>
-import CryptoList from './components/CryptoList.vue'
+import CryptoList from './components/CryptoList.vue';
+import { GChart } from 'vue-google-charts'
 
 export default {
   name: 'app',
   components: {
+    'g-chart': GChart,
     'crypto-list': CryptoList
   },
   data() {
     return {
-      markets: []
+      markets: [],
+      chartData: [
+        ['day', 'a', 'b', 'c', 'd'],
+        ['Mon', 20, 28, 38, 45],
+        ['Tue', 31, 38, 55, 66],
+        ['Wed', 50, 55, 77, 80],
+        ['Thu', 77, 77, 66, 50],
+        ['Fri', 68, 66, 22, 15],
+        ['Fri', 68, 66, 22, 15],
+        ['Fri', 68, 66, 22, 15],
+        ['Fri', 68, 66, 22, 15],
+        ['Fri', 68, 66, 22, 15],
+        ['Fri', 68, 66, 22, 15],
+        ['Fri', 68, 66, 22, 15],
+        ['Fri', 68, 66, 22, 15],
+        ['Fri', 68, 66, 22, 15],
+        ['Fri', 68, 66, 22, 15],
+      ],
+      chartOptions: {
+        legend: 'none',
+        bar: { groupWidth: '100%' }, // Remove space between bars.
+        candlestick: {
+          fallingColor: { strokeWidth: 0, fill: '#a52714' }, // red
+          risingColor: { strokeWidth: 0, fill: '#0f9d58' }, // green
+        },
+      }
     }
   },
   mounted() {
