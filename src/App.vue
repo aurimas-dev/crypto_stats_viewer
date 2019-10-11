@@ -1,17 +1,29 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <crypto-list :markets="markets"></crypto-list>
   </div>
 </template>
 
 <script>
 import HelloWorld from './components/HelloWorld.vue'
+import CryptoList from './components/CryptoList.vue'
 
 export default {
   name: 'app',
   components: {
-    HelloWorld
+    HelloWorld,
+    'crypto-list': CryptoList
+  },
+  data() {
+    return {
+      markets: []
+    }
+  },
+  mounted() {
+    // Get the Markets data
+    fetch('https://poloniex.com/public?command=returnCurrencies')
+    .then(response => response.json())
+    .then(json => this.markets = json);
   }
 }
 </script>
