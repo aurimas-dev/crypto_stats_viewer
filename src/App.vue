@@ -23,23 +23,8 @@ export default {
   data() {
     return {
       markets: [],
-      chartData: [
-        ['day', 'a', 'b', 'c', 'd'],
-        ['Mon', 20, 28, 38, 45],
-        ['Tue', 31, 38, 55, 66],
-        ['Wed', 50, 55, 77, 80],
-        ['Thu', 77, 77, 66, 50],
-        ['Fri', 68, 66, 22, 15],
-        ['Fri', 68, 66, 22, 15],
-        ['Fri', 68, 66, 22, 15],
-        ['Fri', 68, 66, 22, 15],
-        ['Fri', 68, 66, 22, 15],
-        ['Fri', 68, 66, 22, 15],
-        ['Fri', 68, 66, 22, 15],
-        ['Fri', 68, 66, 22, 15],
-        ['Fri', 68, 66, 22, 15],
-        ['Fri', 68, 66, 22, 15],
-      ],
+      marketPairs: [], // Fetch from https://poloniex.com/public?command=return24hVolume
+      chartData: [],
       chartOptions: {
         legend: 'none',
         bar: { groupWidth: '100%' }, // Remove space between bars.
@@ -47,7 +32,35 @@ export default {
           fallingColor: { strokeWidth: 0, fill: '#a52714' }, // red
           risingColor: { strokeWidth: 0, fill: '#0f9d58' }, // green
         },
+      },
+      // TODO: make these dynamic
+      chartSelections: {
+        start: "1546300800",
+        end: "1546646400",
+        currencyPair: "BTC_XMR"
       }
+    }
+  },
+  methods: {
+    fetchChartData: function() {
+      fetch(`https://poloniex.com/public?command=returnChartData&currencyPair=${this.chartSelections.currencyPair}&start=${this.chartSelections.start}&end=${this.chartSelections.end}&period=86400`)
+      .then(response => response.json())
+      .then(json => this.formatChartData(json));
+    },
+    formatChartData: function(data) {
+      // Data should look like:
+      // [['date', 'l', 'o', 'c', 'h'], [date, low, open, close, high], ...]
+      const result = [];
+
+      // Add headers
+      result.push(['date', 'l', 'o', 'c', 'h']);
+
+      // Add body
+      for (let item of data) {
+        result.push([item.date, item.low, item.open, item.close, item.high]);
+      }
+
+      this.chartData = result;
     }
   },
   mounted() {
@@ -55,7 +68,10 @@ export default {
     fetch('https://poloniex.com/public?command=returnCurrencies')
     .then(response => response.json())
     .then(json => this.markets = json);
-  }
+
+    // TODO: remove this
+    this.fetchChartData();
+  },
 }
 </script>
 
