@@ -5,13 +5,11 @@
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
 import CryptoList from './components/CryptoList.vue'
 
 export default {
   name: 'app',
   components: {
-    HelloWorld,
     'crypto-list': CryptoList
   },
   data() {
