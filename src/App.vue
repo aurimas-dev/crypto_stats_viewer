@@ -8,12 +8,10 @@
       :data="chartData"
       :options="chartOptions"
      />
-    <!-- <crypto-list :markets="markets"></crypto-list> -->
   </div>
 </template>
 
 <script>
-import CryptoList from './components/CryptoList.vue';
 import ChartSelect from './components/ChartSelect.vue';
 import {GChart} from 'vue-google-charts';
 import {eventBus} from './main.js';
@@ -23,12 +21,10 @@ export default {
   name: 'app',
   components: {
     'g-chart': GChart,
-    'crypto-list': CryptoList,
     'chart-select': ChartSelect,
   },
   data() {
     return {
-      // markets: [],
       chartData: [],
       chartOptions: {
         legend: 'none',
@@ -43,20 +39,21 @@ export default {
             fontSize: 9,
           },
         },
-        vAxis: {
-          // format: 'decimal',
-        },
         tooltip: {
           isHtml: true,
           textStyle: {
             fontSize: 12,
           },
         },
-        // TODO: another way to do horizontal scroll https://stackoverflow.com/questions/43788394/google-chart-timeline-horizontal-scroll?rq=1
-        // explorer: {axis: 'horizontal'},
       },
       chartSelections: {},
     }
+  },
+  mounted() {
+    eventBus.$on('chart-select-submit', value => {
+      this.chartSelections = value;
+      this.fetchChartData();
+    });
   },
   methods: {
     fetchChartData: function() {
@@ -79,17 +76,6 @@ export default {
 
       this.chartData = result;
     }
-  },
-  mounted() {
-    // Get the Markets data
-    // fetch('https://poloniex.com/public?command=returnCurrencies')
-    // .then(response => response.json())
-    // .then(json => this.markets = json);
-
-    eventBus.$on('chart-select-submit', value => {
-      this.chartSelections = value;
-      this.fetchChartData();
-    });
   },
 }
 </script>

@@ -12,8 +12,6 @@
     <span>End date:</span>
     <input type="date" v-model="chartSelections.end">
 
-    <!-- TODO: imcorporate date period -->
-
     <button type="button" v-on:click="handleSubmit">Show graph</button>
   </section>
 </template>
@@ -34,6 +32,7 @@ export default {
     }
   },
   mounted() {
+    // Fetch the market pair list
     fetch('https://poloniex.com/public?command=return24hVolume')
     .then(response => response.json())
     .then(json => this.currencyPairs = Object.keys(json).filter(value => !value.includes('total')));
