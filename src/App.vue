@@ -37,6 +37,12 @@ export default {
           fallingColor: { strokeWidth: 0, fill: '#a52714' }, // red
           risingColor: { strokeWidth: 0, fill: '#0f9d58' }, // green
         },
+        hAxis: {
+          slantedText: true,
+          textStyle: {
+            fontSize: 9,
+          },
+        },
         // TODO: another way to do horizontal scroll https://stackoverflow.com/questions/43788394/google-chart-timeline-horizontal-scroll?rq=1
         // explorer: {axis: 'horizontal'},
       },
@@ -59,7 +65,7 @@ export default {
 
       // Add body
       for (let item of data) {
-        result.push([item.date, item.low, item.open, item.close, item.high]);
+        result.push([new Date(new Date(item.date * 1000)).toDateString().substring(4, 10), item.low, item.open, item.close, item.high]);
       }
 
       this.chartData = result;
