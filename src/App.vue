@@ -28,7 +28,7 @@ export default {
   },
   data() {
     return {
-      markets: [],
+      // markets: [],
       chartData: [],
       chartOptions: {
         legend: 'none',
@@ -67,9 +67,9 @@ export default {
   },
   mounted() {
     // Get the Markets data
-    fetch('https://poloniex.com/public?command=returnCurrencies')
-    .then(response => response.json())
-    .then(json => this.markets = json);
+    // fetch('https://poloniex.com/public?command=returnCurrencies')
+    // .then(response => response.json())
+    // .then(json => this.markets = json);
 
     eventBus.$on('chart-select-submit', value => {
       this.chartSelections = value;
