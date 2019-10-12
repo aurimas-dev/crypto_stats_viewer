@@ -1,4 +1,4 @@
-# crypto-viewer
+# Crypto Stats Viewer
 
 ## Project setup
 ```
