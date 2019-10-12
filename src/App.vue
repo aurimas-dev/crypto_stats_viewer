@@ -1,29 +1,34 @@
 <template>
   <div id="app">
+    <chart-select></chart-select>
     <g-chart
+      v-if="chartData.length"
       :settings="{ packages: ['corechart', 'table', 'map'] }"
       type="CandlestickChart"
       :data="chartData"
       :options="chartOptions"
      />
-    <crypto-list :markets="markets"></crypto-list>
+    <!-- <crypto-list :markets="markets"></crypto-list> -->
   </div>
 </template>
 
 <script>
 import CryptoList from './components/CryptoList.vue';
-import { GChart } from 'vue-google-charts'
+import ChartSelect from './components/ChartSelect.vue';
+import {GChart} from 'vue-google-charts';
+import {eventBus} from './main.js';
+
 
 export default {
   name: 'app',
   components: {
     'g-chart': GChart,
-    'crypto-list': CryptoList
+    'crypto-list': CryptoList,
+    'chart-select': ChartSelect,
   },
   data() {
     return {
       markets: [],
-      marketPairs: [], // Fetch from https://poloniex.com/public?command=return24hVolume
       chartData: [],
       chartOptions: {
         legend: 'none',
@@ -32,13 +37,10 @@ export default {
           fallingColor: { strokeWidth: 0, fill: '#a52714' }, // red
           risingColor: { strokeWidth: 0, fill: '#0f9d58' }, // green
         },
+        // TODO: another way to do horizontal scroll https://stackoverflow.com/questions/43788394/google-chart-timeline-horizontal-scroll?rq=1
+        // explorer: {axis: 'horizontal'},
       },
-      // TODO: make these dynamic
-      chartSelections: {
-        start: "1546300800",
-        end: "1546646400",
-        currencyPair: "BTC_XMR"
-      }
+      chartSelections: {},
     }
   },
   methods: {
@@ -69,8 +71,10 @@ export default {
     .then(response => response.json())
     .then(json => this.markets = json);
 
-    // TODO: remove this
-    this.fetchChartData();
+    eventBus.$on('chart-select-submit', value => {
+      this.chartSelections = value;
+      this.fetchChartData();
+    });
   },
 }
 </script>
