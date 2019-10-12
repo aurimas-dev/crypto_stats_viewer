@@ -27,9 +27,9 @@ export default {
     return {
       currencyPairs: [],
       chartSelections: {
-        start: new Date(new Date() - 86400000 * 30).toISOString().substr(0, 10),
+        start: new Date(new Date() - 86400000 * 90).toISOString().substr(0, 10),
         end: new Date().toISOString().substr(0, 10),
-        currencyPair: '',
+        currencyPair: 'USDT_BTC',
       },
     }
   },

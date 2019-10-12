@@ -43,6 +43,15 @@ export default {
             fontSize: 9,
           },
         },
+        vAxis: {
+          // format: 'decimal',
+        },
+        tooltip: {
+          isHtml: true,
+          textStyle: {
+            fontSize: 12,
+          },
+        },
         // TODO: another way to do horizontal scroll https://stackoverflow.com/questions/43788394/google-chart-timeline-horizontal-scroll?rq=1
         // explorer: {axis: 'horizontal'},
       },
